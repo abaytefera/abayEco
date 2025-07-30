@@ -14,7 +14,7 @@ const Home = () => {
       {/* Overlay Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 text-white">
         <h1 className="text-4xl md:text-6xl font-light mb-4 tracking-wide">
-          New Season Arrivals
+          Shop
         </h1>
         <p className="text-base md:text-lg max-w-xl mb-6">
           Discover the latest trends and explore our wide selection of fashion products

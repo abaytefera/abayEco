@@ -7,7 +7,7 @@ const Footer = () => {
         <p>
           Made with  by{" "}
           <a
-            href="https://abay.dev"
+          
             target="_blank"
             rel="noreferrer"
             className="underline hover:text-blue-600 text-lg text-gray-800 font-bold transition"
@@ -16,7 +16,7 @@ const Footer = () => {
           </a>
         </p>
         <a
-          href="https://github.com/abay"
+          
           target="_blank"
           rel="noreferrer"
           className="text-gray-800 text-xl hover:text-black transition"
