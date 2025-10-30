@@ -23,7 +23,7 @@ const Products = () => {
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-      const response = await fetch("https://fakestoreapi.com/products/");
+      const response = await fetch("https://69034865d0f10a340b237f3b.mockapi.io/product/list/List");
       if (componentMounted) {
         setData(await response.clone().json());
         setFilter(await response.json());
@@ -90,7 +90,7 @@ const Products = () => {
               {product.description.substring(0, 90)}...
             </p>
             <p className="text-lg font-bold text-green-600 mb-3">
-              ${product.price}
+              {product.price}Birr
             </p>
             <div className="flex flex-col sm:flex-row gap-2 mt-auto">
               <Link

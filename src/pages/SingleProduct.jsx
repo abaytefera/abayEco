@@ -24,7 +24,7 @@ const Product = () => {
     const getProduct = async () => {
       setLoading(true);
       setLoading2(true);
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+      const response = await fetch(`https://69034865d0f10a340b237f3b.mockapi.io/product/list/List/${id}`);
       const data = await response.json();
       setProduct(data);
       setLoading(false);
@@ -70,7 +70,7 @@ const Product = () => {
         <p className="text-lg text-yellow-600">
           {product.rating && product.rating.rate} <i className="fa fa-star" />
         </p>
-        <p className="text-2xl font-bold text-green-600">${product.price}</p>
+        <p className="text-2xl font-bold text-green-600">{product.price}Birr</p>
         <p className="text-gray-700">{product.description}</p>
         <div className="flex gap-4 mt-4">
           <button
