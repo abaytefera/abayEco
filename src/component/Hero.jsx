@@ -6,7 +6,7 @@ const Home = () => {
     <section className="relative h-[85vh] w-full overflow-hidden bg-black ">
       {/* Background Image */}
       <img
-        src="https://res.cloudinary.com/dkzvlqjp9/image/upload/v1768040646/eco_ctuzuz.png"
+        src="image.png"
         alt="Season Banner"
         className="w-full  h-full object-cover opacity-60"
       />
