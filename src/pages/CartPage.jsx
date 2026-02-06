@@ -55,7 +55,7 @@ const Cart = () => {
                 <div className="flex-1 w-full">
                   <h4 className="text-md font-medium">{item.title}</h4>
                   <p className="text-sm text-gray-600">
-                    ${item.price.toFixed(2)} x {item.qty}
+                    {item.price.toFixed(2)}Birr x {item.qty}
                   </p>
                   <div className="flex items-center mt-2 gap-2">
                     <button
@@ -83,15 +83,15 @@ const Cart = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between">
                 <span>Products ({totalItems})</span>
-                <span>${Math.round(subtotal)}</span>
+                <span>{Math.round(subtotal)}Birr</span>
               </li>
               <li className="flex justify-between">
                 <span>Shipping</span>
-                <span>${shipping}</span>
+                <span>{shipping}Birr</span>
               </li>
               <li className="flex justify-between font-bold text-base border-t pt-3">
                 <span>Total</span>
-                <span>${Math.round(subtotal + shipping)}</span>
+                <span>{Math.round(subtotal + shipping)}Birr</span>
               </li>
             </ul>
             <Link

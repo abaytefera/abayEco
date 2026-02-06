@@ -5,15 +5,9 @@ const Footer = () => {
     <footer className="bg-gray-100 text-center py-6 mt-12">
       <div className="flex flex-col items-center gap-3 text-lg text-gray-800">
         <p>
-          Made with  by{" "}
-          <a
+         
+      Website Design & Development © 2025 Abay Tefera
           
-            target="_blank"
-            rel="noreferrer"
-            className="underline hover:text-blue-600 text-lg text-gray-800 font-bold transition"
-          >
-            Abay Tefera
-          </a>
         </p>
         <a
           

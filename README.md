@@ -1,12 +1,27 @@
-# React + Vite
+🇪🇹 Ethiopian E-Commerce Web Application (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+I built a modern Ethiopian e-commerce web application using React, Tailwind CSS, and Redux with a strong focus on performance, usability, and responsive design.
 
-Currently, two official plugins are available:
+Key Features:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🛒 Product listing with categories
 
-## Expanding the ESLint configuration
+🔍 Search and filter functionality
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🧾 Product detail pages
+
+🛍️ Shopping cart using Redux for global state management
+
+📱 Fully responsive design (mobile, tablet, desktop)
+
+🎨 Clean and modern UI built with Tailwind CSS
+
+Technologies Used:
+
+React – Component-based UI development
+
+Redux – State management (cart, products, UI state)
+
+Tailwind CSS – Fast, responsive, and modern styling
+
+This project demonstrates my ability to build real-world e-commerce interfaces, manage application state efficiently, and create user-friendly experiences tailored for local Ethiopian businesses.
