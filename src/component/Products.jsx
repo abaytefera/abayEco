@@ -1,113 +1,131 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
-
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartPlus, faEye } from "@fortawesome/free-solid-svg-icons";
 
 const Products = () => {
   const [data, setData] = useState([]);
-  const [filter, setFilter] = useState(data);
+  const [filter, setFilter] = useState([]);
   const [loading, setLoading] = useState(false);
-  let componentMounted = true;
+  const [activeCategory, setActiveCategory] = useState("All");
 
   const dispatch = useDispatch();
 
   const addProduct = (product) => {
     dispatch(addCart(product));
+    toast.success(`${product.title.substring(0, 15)}... added to cart`, {
+      style: { borderRadius: '10px', background: '#333', color: '#fff' }
+    });
   };
 
   useEffect(() => {
+    let componentMounted = true;
     const getProducts = async () => {
       setLoading(true);
       const response = await fetch("https://69034865d0f10a340b237f3b.mockapi.io/product/list/List");
+      const products = await response.json();
       if (componentMounted) {
-        setData(await response.clone().json());
-        setFilter(await response.json());
+        setData(products);
+        setFilter(products);
         setLoading(false);
       }
-      return () => {
-        componentMounted = false;
-      };
     };
-
     getProducts();
+    return () => { componentMounted = false; };
   }, []);
 
+  const filterProduct = (cat) => {
+    setActiveCategory(cat);
+    if (cat === "All") {
+      setFilter(data);
+    } else {
+      const updatedList = data.filter((item) => item.category === cat.toLowerCase());
+      setFilter(updatedList);
+    }
+  };
+
   const Loading = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i}>
-          <Skeleton height={592} />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-6">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div key={i} className="p-4 bg-white rounded-2xl">
+          <Skeleton height={250} borderRadius={16} />
+          <Skeleton count={2} className="mt-4" />
+          <Skeleton width={80} height={24} className="mt-2" />
         </div>
       ))}
     </div>
   );
 
-  const filterProduct = (cat) => {
-    const updatedList = data.filter((item) => item.category === cat);
-    setFilter(updatedList);
-  };
-
   const ShowProducts = () => (
     <>
-      <div className="flex flex-wrap justify-center gap-3 py-5">
-        {[
-          { label: "All", action: () => setFilter(data) },
-          { label: "Men's Clothing", action: () => filterProduct("men's clothing") },
-          { label: "Women's Clothing", action: () => filterProduct("women's clothing") },
-          { label: "Jewelery", action: () => filterProduct("jewelery") },
-          { label: "Electronics", action: () => filterProduct("electronics") },
-        ].map(({ label, action }, index) => (
+      {/* Category Pills */}
+      <div className="flex flex-wrap justify-center gap-2 mb-12">
+        {["All", "Men's Clothing", "Women's Clothing", "Jewelery", "Electronics"].map((cat) => (
           <button
-            key={index}
-            onClick={action}
-            className="px-4 py-1 border border-gray-700 rounded hover:bg-gray-800 hover:text-white transition text-sm"
+            key={cat}
+            onClick={() => filterProduct(cat)}
+            className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 border ${
+              activeCategory === cat 
+              ? "bg-gray-900 text-white border-gray-900 shadow-lg shadow-gray-200" 
+              : "bg-white text-gray-600 border-gray-200 hover:border-gray-900"
+            }`}
           >
-            {label}
+            {cat}
           </button>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Product Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {filter.map((product) => (
           <div
             key={product.id}
-            className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between"
+            className="group relative bg-white border border-gray-100 rounded-3xl p-5 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:-translate-y-2 flex flex-col"
           >
-            <img
-              src={product.image}
-              alt={product.title}
-              className="h-60 object-contain mb-4 mx-auto"
-            />
-            <h5 className="text-lg font-semibold mb-2 truncate">
-              {product.title.substring(0, 20)}...
-            </h5>
-            <p className="text-gray-600 text-sm mb-3">
-              {product.description.substring(0, 90)}...
-            </p>
-            <p className="text-lg font-bold text-green-600 mb-3">
-              {product.price}Birr
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2 mt-auto">
-              <Link
-                to={`/product/${product.id}`}
-                className="flex-1 text-center px-4 py-2 bg-gray-800 text-white rounded hover:bg-black transition"
+            {/* Image Container */}
+            <div className="relative overflow-hidden rounded-2xl bg-gray-50 h-64 flex items-center justify-center p-6 mb-6">
+              <img
+                src={product.image}
+                alt={product.title}
+                className="h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110"
+              />
+              {/* Floating Quick Action */}
+              <button 
+                onClick={() => addProduct(product)}
+                className="absolute bottom-4 right-4 w-10 h-10 bg-white shadow-xl rounded-full flex items-center justify-center text-gray-900 opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-gray-900 hover:text-white"
               >
-                Buy Now
-              </Link>
-              <button
-                onClick={() => {
-                  toast.success("Added to cart");
-                  addProduct(product);
-                }}
-                className="flex-1 px-4 py-2 border border-gray-800 text-gray-800 rounded hover:bg-gray-800 hover:text-white transition"
-              >
-                Add to Cart
+                <FontAwesomeIcon icon={faCartPlus} />
               </button>
+            </div>
+
+            {/* Info */}
+            <div className="flex flex-col flex-grow">
+              <span className="text-[10px] uppercase tracking-widest text-blue-600 font-bold mb-1">
+                {product.category}
+              </span>
+              <h5 className="text-gray-900 font-bold text-lg leading-tight mb-2 line-clamp-1">
+                {product.title}
+              </h5>
+              <p className="text-gray-400 text-xs line-clamp-2 mb-4 leading-relaxed">
+                {product.description}
+              </p>
+              
+              <div className="mt-auto pt-4 flex items-center justify-between border-t border-gray-50">
+                <span className="text-xl font-black text-gray-900">
+                  {product.price}<small className="text-xs ml-1 font-bold">ETB</small>
+                </span>
+                <Link
+                  to={`/product/${product.id}`}
+                  className="text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-gray-900 transition flex items-center gap-2"
+                >
+                  Details <FontAwesomeIcon icon={faEye} />
+                </Link>
+              </div>
             </div>
           </div>
         ))}
@@ -116,11 +134,16 @@ const Products = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold text-center mb-4">Latest Products</h2>
-      <div className="h-[2px] bg-gray-300 w-24 mx-auto mb-8" />
+    <section className="py-16 px-6 container mx-auto">
+      <div className="max-w-xl mx-auto text-center mb-12">
+        <h2 className="text-4xl font-black text-gray-900 mb-4 tracking-tight">Our Collection</h2>
+        <p className="text-gray-500">
+          Discover handpicked premium items curated just for your lifestyle.
+        </p>
+      </div>
+      
       {loading ? <Loading /> : <ShowProducts />}
-    </div>
+    </section>
   );
 };
 

@@ -1,115 +1,81 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSignInAlt,
-  faUserPlus,
-  faShoppingCart,
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSignInAlt, faUserPlus, faShoppingCart, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const cartItems = useSelector((state) => state.handleCart);
+  const location = useLocation();
 
-  const navLinks = [
-    { name: "Home", to: "/" },
-    { name: "Products", to: "/product" },
-    { name: "About", to: "/about" },
-    { name: "Contact", to: "/contact" },
-  ];
+  // Close mobile menu when route changes
+  useEffect(() => setIsMenuOpen(false), [location]);
 
-  const authLinks = [
-    {
-      to: "/login",
-      label: "Login",
-      icon: faSignInAlt,
-    },
-    {
-      to: "/register",
-      label: "Register",
-      icon: faUserPlus,
-    },
-    {
-      to: "/cart",
-      label: `Cart (${cartItems.length})`,
-      icon: faShoppingCart,
-    },
-  ];
-// 
   return (
-    <nav className="bg-white/60 h-[90px] flex justify-center backdrop-blur-xl shadow-md sticky top-0 z-50 w-full">
-      <div className="container mx-auto flex items-center justify-between px-4 py-4">
+    <nav className="sticky top-0 z-[100] w-full bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
+      <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+        
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold italic">
-          Ethio <span className="text-blue-600">Ecommerce</span>
+        <Link to="/" className="text-2xl font-black tracking-tighter hover:opacity-80 transition">
+          ETHIO <span className="text-blue-600">STORE</span>
         </Link>
 
-        {/* Hamburger for mobile */}
-        <button
-          className="text-2xl sm:hidden focus:outline-none"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-
-        {/* Desktop Nav */}
-        <ul className="hidden sm:flex items-center gap-6 text-sm font-medium text-gray-700">
-          {navLinks.map((link) => (
-            <li key={link.name}>
-              <Link to={link.to} className="hover:text-blue-600 transition">
-                {link.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        {/* Desktop Buttons */}
-        <div className="hidden sm:flex items-center gap-3">
-          {authLinks.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="flex items-center gap-2 border border-gray-700 text-gray-800 hover:bg-gray-800 hover:text-white px-4 py-1 rounded-full text-sm transition"
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-8">
+          {["Home", "Product", "About", "Contact"].map((item) => (
+            <Link 
+              key={item} 
+              to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+              className="text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors"
             >
-              <FontAwesomeIcon icon={link.icon} />
-              {link.label}
-              {/* link.label */}
+              {item}
             </Link>
           ))}
         </div>
+
+        {/* Action Buttons */}
+        <div className="hidden md:flex items-center gap-4">
+          <Link to="/login" className="text-sm font-semibold px-4 py-2 hover:text-blue-600 transition">
+            Login
+          </Link>
+          <Link to="/register" className="bg-gray-900 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-800 transition shadow-lg shadow-gray-200">
+            Sign Up
+          </Link>
+          <Link to="/cart" className="relative p-2 text-gray-700 hover:text-blue-600 transition">
+            <FontAwesomeIcon icon={faShoppingCart} className="text-lg" />
+            {cartItems.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+                {cartItems.length}
+              </span>
+            )}
+          </Link>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} className="text-xl" />
+        </button>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`sm:hidden flex flex-col gap-3 px-4 pb-4 bg-white transition-all duration-300 ease-in-out ${
-          isMenuOpen ? "max-h-[600px] pt-4 opacity-100 visible" : "max-h-0 overflow-hidden opacity-0 invisible"
-        }`}
-      >
-        {navLinks.map((link) => (
-          <Link
-            key={link.to}
-            to={link.to}
-            onClick={() => setIsMenuOpen(false)}
-            className="block text-gray-800 text-sm font-medium hover:text-blue-600 transition"
-          >
-            {link.name}
-          </Link>
-        ))}
-        <div className="flex flex-col gap-2 mt-2">
-          {authLinks.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-2 border border-gray-700 text-gray-800 hover:bg-gray-800 hover:text-white px-4 py-2 rounded-full text-sm transition"
-            >
-              <FontAwesomeIcon icon={link.icon} />
-              {link.label}
+      {/* Mobile Sidebar Overlay */}
+      <div className={`fixed inset-0 bg-black/50 md:hidden transition-opacity ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`} onClick={() => setIsMenuOpen(false)} />
+      
+      {/* Mobile Sidebar */}
+      <div className={`fixed top-0 right-0 h-full w-3/4 max-w-sm bg-white z-[101] shadow-2xl transform transition-transform duration-300 md:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+        <div className="p-8 flex flex-col gap-6">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Menu</p>
+          {["Home", "Products", "About", "Contact"].map((item) => (
+            <Link key={item} to={item === "Home" ? "/" : `/${item.toLowerCase()}`} className="text-xl font-bold text-gray-800">
+              {item}
             </Link>
           ))}
+          <hr className="border-gray-100" />
+          <div className="flex flex-col gap-4">
+            <Link to="/login" className="flex items-center gap-3 text-lg font-medium"><FontAwesomeIcon icon={faSignInAlt} /> Login</Link>
+            <Link to="/cart" className="flex items-center gap-3 text-lg font-medium"><FontAwesomeIcon icon={faShoppingCart} /> Cart ({cartItems.length})</Link>
+            <Link to="/register" className="bg-blue-600 text-white text-center py-4 rounded-xl font-bold">Get Started</Link>
+          </div>
         </div>
       </div>
     </nav>
