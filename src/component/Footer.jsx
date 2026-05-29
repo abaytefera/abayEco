@@ -76,7 +76,7 @@ const Footer = () => {
         <div className="border-t border-gray-100 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8">
             <p className="text-gray-900 text-[11px] font-bold uppercase tracking-tight">
-              © 2026 Abay Tefera.
+              © 2026 Asnakech legesse.
             </p>
             <div className="flex gap-6 text-[11px] font-bold text-gray-500 uppercase tracking-tighter">
               <a href="#" className="hover:text-gray-900 transition-colors">Privacy Policy</a>
